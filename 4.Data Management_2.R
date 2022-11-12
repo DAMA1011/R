@@ -101,3 +101,9 @@ airquality_N$Temp <- as.numeric(airquality_N$Temp)
 is.numeric(airquality_N$Ozone)
 is.numeric(airquality_N$Solar.R)
 is.numeric(airquality_N$Temp)
+
+opt <- c(1, 2, 4)
+for (i in opt){
+  airquality[,i] <- as.numeric(airquality[,i])
+}
+str(airquality)

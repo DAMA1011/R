@@ -33,6 +33,7 @@ lead_order2
 lead_order3 <- leadership[order(gender,-age),]
 lead_order3
 
+detach(leadership)
 #*******************************************************
 # 5-2 Quiz ####
 
@@ -41,7 +42,18 @@ lead_order3
 #(3)請依變量read由小至大進行排序 再依prog由小至大進行排序, 賦值為order2_hsb, 並列出前15筆數據進行確認
 #(4)請依變量prog由小至大進行排序 再依read由大至小進行排序, 賦值為order3_hsb,, 並列出前15筆數據進行確認
 
+hsb <- read.csv("C:/R training/4.Data Management/hsb.csv", header=T, sep=",",stringsAsFactors=F)
 
+attach(hsb)
+order_hsb <- hsb[order(read),]
+head(order_hsb, n=15)
+
+order2_hsb <- hsb[order(read, prog),]
+head(order2_hsb, n=15)
+
+order3_hsb <- hsb[order(prog, -read),]
+head(order3_hsb, n=15)
+detach(hsb)
 
 #******************************************************
 # 6.Merging Data ####
@@ -69,6 +81,8 @@ Stocks_r
 
 class(Stocks_r) # still a data frame
 
+# SQL union (all)
+# 同樣變數，要新增樣本
 #*******************************************************
 # 6-2 cbind() ####
 #cbind() 把矩陣橫向合併(by column)成一個矩陣
@@ -78,6 +92,7 @@ Stocks_c
 class(Stocks_c)
 names(Stocks_c)
 
+# 同樣樣本，要新增變數
 #*****************************************************
 # 6-3 rbind() & cbind() ####
 # WARNING: cbind does not require matching heights; if one data frame is shorter
@@ -103,13 +118,15 @@ right
 #*****************************************************
 #Inner join
 # Data frames left and right have columns "id" in common. Let's merge them together based on id:
-merge(left, right, by="ID", all=FALSE)
+merge(left, right, by="ID", all=FALSE) # 預設為 False
 
+# 兩個 dataframe 會是在最嚴格的情況下 merge
 #*****************************************************
 #Full join
 # If we wanted to merge all rows regardless of match, we use the argument all=TRUE. It is FALSE by default. This creates an FULL JOIN.
 merge(left, right, by="ID", all=TRUE)
 
+# 兩個 dataframe 會是在最寬鬆的情況下 merge
 #*************************************************
 # LEFT JOIN
 # If we want to retain everything in the left data frame and merge only what matches in the right data frame, we specify all.x=TRUE. This is known as a LEFT JOIN.
@@ -120,6 +137,7 @@ merge(left, right, all.x=TRUE, by="ID")
 # If we want to retain everything in the right data frame and merge only what matches in the left data frame, we specify all.y=TRUE. This is known as a RIGHT JOIN.
 merge(left, right, all.y=TRUE, by="ID")
 
+# anti-join(): 另一種 merge
 #**************************************************
 # 6-5 Quiz ####
 #Q1.請創建下列運動賽事獲獎名單的data frame,並判斷使用rbind()或是cbind()進行合併, 合併後賦值為trophies
@@ -138,28 +156,32 @@ trophies2 <- data.frame(sport=c("Basketball", "Golf"),
                         trophy=c("Larry O'Brien Championship Trophy","Wanamaker Trophy"),
                         stringsAsFactors=FALSE)
 trophies2
-#Q1.請創建下列運動賽事獲獎名單的data frame,並判斷使用rbind()或是cbind()進行合併, 合併後賦值為trophies
 
-
+trophies <- rbind(trophies1, trophies2)
+trophies
 
 
 #***********************************************
 # Q2. 1. 請創建下列電商顧客基本數據的data frame, 並使用merge()進行各種聯結(Inner join、Full join、Left join、Right join)
-# 2. 我想知道所有地區的購買狀況，請問你要用哪種merge方法？
+# 2. 我想知道所有地區的購買狀況，請問你要用哪種merge方法？(Left join)
 df1 <- data.frame(CustomerId = seq(1, 40, by = 2),  
                   state = c(rep("Taipei", 7), rep("Taichung", 8),
                             rep ("Tainan", 5)))
+df1
 
 df2 <- data.frame(CustomerId = c(1:20), 
                   Product = c(rep("Toaster", 8), rep("Radio", 2), 
                               rep("TV",6), rep("vacuum",4)))
 df2
 
+# seq(): 跳號 / rep(): 重複
+
 # Q2. 請創建下列電商顧客基本數據的data frame, 並使用merge()進行各種聯結(Inner join、Full join、Left join、Right join)
 #Inner join
-
+merge(df1, df2, by="CustomerId", all=FALSE)
 #Full join
-
+merge(df1, df2, by="CustomerId", all=TRUE)
 #Left join
-
+merge(df1, df2, all.x=TRUE, by="CustomerId")
 #Right join
+merge(df1, df2, all.y=TRUE, by="CustomerId")
