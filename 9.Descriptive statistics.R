@@ -108,14 +108,14 @@ round(prop.table(mytable)*100,
 #(1)請創建mtcars資料集裡變數am(0(自排車);1(手排車))的一維列聯表
 #(2)使用prop.table()將上題(1)的頻數轉化為比例值
 #(3)使用prop.table()*100將上題(2)轉化為百分比,計算至小數點第二位
+View(mtcars)
 
+mytable2 <- table(mtcars$am)
+mytable2
 
+prop.table(mytable2)
 
-
-
-
-
-
+round(prop.table(mytable2)*100, 2)
 
 #**************************************************
 # 2-2 二維列聯表 ####
@@ -162,15 +162,16 @@ round(addmargins(prop.table(mytable2, 2), 1),
 #(2)次數+邊際和二維列聯表
 #(3)比例二維列聯表
 #(4)比例+邊際和二維列聯表
+mytable3 <- xtabs(~ cyl+am, 
+                  data=mtcars)
+mytable3
 
+addmargins(mytable3)
 
+prop.table(mytable3)
 
-
-
-
-
-
-
+library(dplyr)
+addmargins(prop.table(mytable3)) * 100 %>% round(2)
 
 #*********************************************
 # 2-3 三維列聯表 ####
