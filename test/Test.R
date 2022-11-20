@@ -8,8 +8,7 @@ Student <- c("Sam Davis", "Kyle Anderson", "Jarrett Allen",
 Math <- c(504, 701, 423, 368, 395, 617, 314, 523, 663, 632)
 Chinese <- c(93, 99, 75, 83, 72, 65, 85, 65, 78, 76)
 English <- c(22, 24, 17, 14, 23, 24, 29, 13, 24, 15)
-df <- data.frame(Student, Math, Chinese, English, 
-                     stringsAsFactors=FALSE)
+df <- data.frame(Student, Math, Chinese, English, stringsAsFactors=FALSE)
 df
 str(df)
 
@@ -22,52 +21,38 @@ str(df)
 options(digits = 2)
 
 # Step 2. 由於數學、國文和英語考試的數值不同（均值和標準差相去甚遠），在組合之前需要先讓它們變得可以比較。請將變量進行標準化，這樣每科考試的成績就都是用單位標準差來表示，而不是以原始的尺度來表示。(hint:scale()函數)
-
-
-
-
-
-
+df2 <- scale(df[,2:4])
+df2
 
 #Step 3. 計算每人的所有科目的平均值，以獲得綜合得分，並將其添加到原始名冊中（hint: mean(), cbind())
-
-
-
-
+Score_mean <- data.frame(Score_mean=c(apply(df2[,1:3], 1, mean)))
+Score_mean
+df3 <- cbind(df2, Score_mean)
+df3
 
 #Step 4. 使用函數quantile()得到學生綜合得分的百分位數(0.8, 0.6, 0.4, 0.2)
-
-
-
-
-
+quantile(df3$Score_mean, c(0.2, 0.4, 0.6, 0.8))
 
 #Step 5. 將學生的排名，進行重編碼，為A,B,C,D,E，這新的五個類別型變量命名為grade。
-
-
-
-
-
+df3$grade <- ifelse(df3$Score_mean >= 0.5, 'A',
+                    ifelse(df3$Score_mean >= 0.11, 'B',
+                           ifelse(df3$Score_mean >= -0.23, 'C',
+                                  ifelse(df3$Score_mean >= -0.58, 'D', 'E'))))
+df3
 
 #Step 6. 以空格為界把學生姓名拆分為姓氏和名字，並返回一個name的列表(hint:使用strsplit())
-
-
-
-
-
+name <- strsplit(df3$Student, ' ')
+name
+str(name)
 
 #Step 7. 使用函數sapply()提取列表中每個成分的第一個元素，放入一個儲存名字的向量，並提取每個成分的第二個元素，放入一個儲存姓氏的向量。"["是一個可以提取某個對象的一部分的函數——在這裡它是用來提取列表name各成分中的第一個或第二個元素的。使用cbind()把它們添加到名冊中。由於已經不再需要student變量，請將其刪除。
-
-
-
-
-
-
+Firstname <- sapply(name, '[', 1)
+Firstname
+Lastname <- sapply(name, '[', 2)
+Lastname
+df4 <- cbind(df3, Firstname, Lastname)
+df4$Student <- NULL
+df4
 
 #Step 8. 依姓氏(Lastname)和名字(Firstname)對數據集進行A-Z排序(hint:order()或arrange()函數)
-
-
-
-
-
-
+df4 %>% arrange(Lastname, Firstname)

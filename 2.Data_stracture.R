@@ -2,7 +2,7 @@
 # 1. Data Character  ####
 #********************************************
 #   數據型態	       
-#   integer	         
+#   integer	      
 #   number	        
 #   logic            
 #   character	     
@@ -22,6 +22,8 @@
 a <- 3 
 a
 b <- 1.6   
+c <- 4
+c
 
 #a和b为「變數」(或是對象)
 #<-符號，會把右邊的東西，儲存到左邊的名字裡
@@ -72,7 +74,7 @@ a <- TRUE
 b <- FALSE
 str(a)        # 確認a的型態
 is.integer(b) # 判斷b是不是整數，但b是logic型態，所以回傳FALSE
-
+is.logical(a)
 
 #*****************************************************************
 # 1-3 字串 (character) ####
@@ -80,6 +82,7 @@ is.integer(b) # 判斷b是不是整數，但b是logic型態，所以回傳FALSE
 #定義一個character變量的话，放在右邊的值，要用雙引号(" ")括起来：
 professor <- "Dr.Lee"
 str(professor)     # 確認professor數據型態
+is.character(professor)
 
 # ****************************************************************
 # 1-4 類別变量 (factor) ####
@@ -97,6 +100,7 @@ summary(gender)
 
 #An ordered factor is used to represent an "ordinal variable"
 status <- c("Poor", "Improved", "Excellent", "Poor")
+str(status)
 status
 status <- factor(status, order = T, levels = c("Poor", "Improved", "Excellent"))
 status
@@ -152,7 +156,9 @@ levels(degree)
 a <- c(5,10,15,20,25)           # 建立一個number vector
 b <- c("Tom", "Henry", "John")  # 建立一個character vector
 a
+str(a)
 b
+str(b)
 
 #定義一個vector變量叫做a，裡面的數字(1~5)就被稱為元素(element)。
 #vector的概念其實不難懂，就把它想象成一條長長的火車，每個車廂都存放一個貨品(element)。
