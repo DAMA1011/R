@@ -10,6 +10,11 @@ my.symbols <- c("《", "》", "【", "】", "|", "(",")",
 video.info.des$des_n <- gsub(paste(my.symbols, collapse = "|"),#  |或，代表所有標點符號任一
                            "", 
                            video.info.des$description)
+
+# gsub() R語言中的函數用於從字符串中替換一個模式的所有匹配項。如果未找到模式，則字符串將按原樣返回。
+
+# paste() 將任意数量的参數组合在一起，collapse - 用於消除兩個字符串之間的空間
+
 # Remove stopwords ####
 my.stop.words <- c(
   "娘娘", "Alizabeth", "阿辰師", "Joeman", "老高與小茉 Mr & Mrs Gao", "愛莉莎莎", 
@@ -42,6 +47,8 @@ wk <- worker(stop_word = jiebaR::STOPPATH) # Initialize a JiebaR worker
 customized.terms <- c("台灣", "義大利", "法國", "小彤姐", "不只是", "嘆為觀止", "麵包", "攏吼蕊啦")
 new_user_word(wk, customized.terms)
 
+# https://weijutu.github.io/2019/04/17/r/r-textmining-01-ch01-1/
+
 # segment terms and separate by blank 
 video.description.des <- tibble(
   channel_title = video.info.des$channelTitle, # Youtube channel title
@@ -58,7 +65,11 @@ library(tidytext)
 tidy.description.des <- video.description.des %>%
   unnest_tokens(word, description, token = function(t) str_split(t,"[ ]{1,}")) # 至少要有一個空白鍵
 
+# str_split() https://blog.csdn.net/weixin_46587777/article/details/124912225
+
 tidy.description.des <- tidy.description.des[nchar(tidy.description.des$word) > 1, ]
+
+# nchar() R編程中的方法用於獲取字符串的長度。
 
 # 詞頻分析 ####
 channel.words.des <- tidy.description.des %>%
@@ -67,6 +78,8 @@ channel.words.des <- tidy.description.des %>%
   group_by(channel_title) %>%
   top_n(3, word_frequency) %>% 
   arrange(-word_frequency)
+
+# n=n() means that a variable named n will be assigned the number of rows in the summarized data
 
 # TF-IDF ####
 video.words <- tidy.description.des %>%   # 在每個cannel裡個詞的次數
