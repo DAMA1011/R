@@ -1,3 +1,5 @@
+library(dplyr)
+
 # 有10 位學生學生參加數學、國文和英語考試，為了將學生進行比較，要將學生各個科目的成績進一步分析
 # 要將前20%(含)的學生評為A，21~40%的學生評為B，以此類推。最後再依學生的姓名的字母進行排序
 
@@ -21,8 +23,7 @@ str(df)
 options(digits = 2)
 
 # Step 2. 由於數學、國文和英語考試的數值不同（均值和標準差相去甚遠），在組合之前需要先讓它們變得可以比較。請將變量進行標準化，這樣每科考試的成績就都是用單位標準差來表示，而不是以原始的尺度來表示。(hint:scale()函數)
-df2 <- scale(df[,2:4])
-df2
+df2 <- cbind(df$Student, data.frame(scale(df[,2:4])))
 
 #Step 3. 計算每人的所有科目的平均值，以獲得綜合得分，並將其添加到原始名冊中（hint: mean(), cbind())
 Score_mean <- data.frame(Score_mean=c(apply(df2[,1:3], 1, mean)))
@@ -41,7 +42,7 @@ df3$grade <- ifelse(df3$Score_mean >= 0.5, 'A',
 df3
 
 #Step 6. 以空格為界把學生姓名拆分為姓氏和名字，並返回一個name的列表(hint:使用strsplit())
-name <- strsplit(df3$Student, ' ')
+name <- strsplit(df$Student, ' ')
 name
 str(name)
 
@@ -56,3 +57,4 @@ df4
 
 #Step 8. 依姓氏(Lastname)和名字(Firstname)對數據集進行A-Z排序(hint:order()或arrange()函數)
 df4 %>% arrange(Lastname, Firstname)
+
