@@ -1,5 +1,5 @@
 library(tidyverse)
-video.info.ori <- read.csv(file = 'M:/VSCode Workspace/Training/R/16.NLP/youtube.csv', stringsAsFactors = F)
+video.info.ori <- read.csv(file = 'C:/R training/test/youtube.csv', stringsAsFactors = F)
 
 video.info.des <- video.info.ori[,c("channelTitle","description")]
 
@@ -99,3 +99,4 @@ tiidf.words <- video.words %>%
   group_by(channel_title) %>%
   top_n(10, tf_idf) %>% 
   arrange(channel_title,-tf_idf)
+
